@@ -14,6 +14,10 @@ LICENSE=	PSFL
 
 LIB_DEPENDS=	libffi.so:devel/libffi
 
+FLAVORS=	default dtrace
+FLAVOR?=	${FLAVORS:[1]}
+dtrace_PKGNAMESUFFIX+=	-dtrace
+
 USES=		compiler:c11 cpe ncurses pathfix pkgconfig \
 		python:${PYTHON_DISTVERSION:R},env readline shebangfix ssl tar:xz
 PATHFIX_MAKEFILEIN=	Makefile.pre.in
@@ -45,6 +49,15 @@ PLIST_SUB=		ABI=${ABIFLAGS} \
 			OSMAJOR=${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}		# For plat-freebsd* in pkg-plist. https://bugs.python.org/issue19554
 
 OPTIONS_DEFINE=		DEBUG IPV6 LIBMPDEC LTO NLS PYMALLOC
+
+.if ${FLAVOR} == dtrace
+COMMENT+=		with Dtrace support
+USES+=			gmake
+OPTIONS_EXCLUDE=	LTO
+CONFIGURE_ARGS+=	--with-dtrace
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-configure-dtrace
+.endif
+
 OPTIONS_DEFAULT=	LIBMPDEC LTO PYMALLOC
 OPTIONS_EXCLUDE_riscv64=	LTO
 OPTIONS_EXCLUDE_powerpc64le=	LTO

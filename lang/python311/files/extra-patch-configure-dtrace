@@ -1,0 +1,11 @@
+--- configure.orig	2025-02-20 21:35:53.814250000 +0100
++++ configure	2025-02-20 21:35:59.816222000 +0100
+@@ -15051,7 +15051,7 @@
+ 
+ DTRACE=
+ DTRACE_HEADERS=
+-DTRACE_OBJS=
++DTRACE_OBJS="Python/pydtrace.o"
+ 
+ if test "$with_dtrace" = "yes"
+ then
